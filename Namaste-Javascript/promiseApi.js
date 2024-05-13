@@ -46,3 +46,66 @@
 //.......//Promise.any([p1,p2,p3])
 //It will wait for the first promise to get successfull,
 //p1 - 1s gets rejected, p2 - 3s, p3 - 5s, then here the result of p2 is returned after 3 seconds
+//what if everthing fails here ? - The returned result will be an aggregated error. [e1, e2, e3];
+
+//Examples
+//1.Promise all
+const p1 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("P1 Success");
+  }, 3000);
+});
+
+// const p2 = new Promise((resolve, reject) => {
+//   setTimeout(() => {
+//     resolve("P2 Success");
+//   }, 1000);
+// });
+
+const p2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    reject("P2 Fail");
+  }, 1000);
+});
+
+const p3 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("P3 Success");
+  }, 2000);
+});
+
+// Promise.all([p1, p2, p3])
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => console.error(err));
+
+// [ 'P1 Success', 'P2 Success', ' P3 Success' ] :- when all are resolve
+//P2 Fail :- When one of them is reject
+
+// Promise.allSettled([p1, p2, p3])
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => console.error(err));
+// [
+//   { status: "fulfilled", value: "P1 Success" },
+//   { status: "rejected", reason: "P2 Fail" },
+//   { status: "fulfilled", value: " P3 Success" },
+// ];
+
+// Promise.race([p1, p2, p3])
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => console.error(err));
+//P2 Fail
+
+//Settled :- Got the result ( Either resolve,success,fulfilled or reject,failure,rejected)
+
+Promise.any([p1, p2, p3])
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => console.error(err));
+//P3 Success
