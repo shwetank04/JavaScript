@@ -69,6 +69,44 @@ getAsyncPromise1();
 //log namaste 2. Same goes with data1.
 
 //Example of async await
-//Error Handling
-//Interviews
-//Async await vs Promise.then/ .catch
+const p1 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("promise resolved value");
+  }, 10000);
+});
+
+const p2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("promise resolved value");
+  }, 5000);
+});
+
+async function getAsyncPromise2() {
+  console.log("Hello world");
+  const data = await p1;
+  console.log("Namaste 2");
+  console.log(data);
+
+  const data1 = await p2;
+  console.log("Namaste 3");
+  console.log(data1);
+}
+getAsyncPromise2();
+//As p1 is not resolved, the getAsyncPromise2 will move out of call stack and wait for p1 to resolve.After 10 seconds,
+//namaste 2 and data will be printed and once it move to data1 it will see that p2 is alsready resolved so it will print
+//right away
+
+//Example:-Api call using fetch function and error handling
+async function handleFetch() {
+  try {
+    //It waited for fetch to be resolved
+    const data = await fetch("https://api.github.com/authorizations");
+    const jsonValue = await data.json();
+    console.log(jsonValue);
+  } catch (err) {
+    console.log(err);
+  }
+}
+handleFetch();
+
+//Async await vs Promise.then/ .catch :- async, await is syntactical sugar over promise.
